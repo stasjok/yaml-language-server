@@ -13,11 +13,12 @@ export function checkSchemaURI(
   workspaceFolders: WorkspaceFolder[],
   workspaceRoot: URI,
   uri: string,
-  telemetry: Telemetry
+  telemetry: Telemetry,
+  kubernetesSchemaUrl = KUBERNETES_SCHEMA_URL
 ): string {
   if (uri.trim().toLowerCase() === 'kubernetes') {
     telemetry.send({ name: 'yaml.schema.configured', properties: { kubernetes: true } });
-    return KUBERNETES_SCHEMA_URL;
+    return kubernetesSchemaUrl;
   } else if (isRelativePath(uri)) {
     return relativeToAbsolutePath(workspaceFolders, workspaceRoot, uri);
   } else {

@@ -12,6 +12,7 @@ export interface Settings {
   yaml: {
     format: CustomFormatterOptions;
     schemas: JSONSchemaSettings[];
+    kubernetesSchemaUrl: string;
     validate: boolean;
     hover: boolean;
     completion: boolean;

@@ -66,6 +66,9 @@ export class SettingsHandler {
       if (Object.prototype.hasOwnProperty.call(settings.yaml, 'schemas')) {
         this.yamlSettings.yamlConfigurationSettings = settings.yaml.schemas;
       }
+      if (Object.prototype.hasOwnProperty.call(settings.yaml, 'kubernetesSchemaUrl')) {
+        this.yamlSettings.kubernetesSchemaUrl = settings.yaml.kubernetesSchemaUrl;
+      }
       if (Object.prototype.hasOwnProperty.call(settings.yaml, 'validate')) {
         this.yamlSettings.yamlShouldValidate = settings.yaml.validate;
       }
@@ -142,7 +145,7 @@ export class SettingsHandler {
 
       const schemaObj = {
         fileMatch: Array.isArray(globPattern) ? globPattern : [globPattern],
-        uri: checkSchemaURI(this.yamlSettings.workspaceFolders, this.yamlSettings.workspaceRoot, uri, this.telemetry),
+        uri: checkSchemaURI(this.yamlSettings.workspaceFolders, this.yamlSettings.workspaceRoot, uri, this.telemetry, this.yamlSettings.kubernetesSchemaUrl),
       };
       this.yamlSettings.schemaConfigurationSettings.push(schemaObj);
     }
@@ -330,7 +333,7 @@ export class SettingsHandler {
     languageSettings: LanguageSettings,
     priorityLevel: number
   ): LanguageSettings {
-    uri = checkSchemaURI(this.yamlSettings.workspaceFolders, this.yamlSettings.workspaceRoot, uri, this.telemetry);
+    uri = checkSchemaURI(this.yamlSettings.workspaceFolders, this.yamlSettings.workspaceRoot, uri, this.telemetry, this.yamlSettings.kubernetesSchemaUrl);
 
     if (schema === null) {
       languageSettings.schemas.push({ uri, fileMatch: fileMatch, priority: priorityLevel });
