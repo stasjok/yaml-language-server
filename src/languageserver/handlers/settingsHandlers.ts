@@ -145,7 +145,13 @@ export class SettingsHandler {
 
       const schemaObj = {
         fileMatch: Array.isArray(globPattern) ? globPattern : [globPattern],
-        uri: checkSchemaURI(this.yamlSettings.workspaceFolders, this.yamlSettings.workspaceRoot, uri, this.telemetry, this.yamlSettings.kubernetesSchemaUrl),
+        uri: checkSchemaURI(
+          this.yamlSettings.workspaceFolders,
+          this.yamlSettings.workspaceRoot,
+          uri,
+          this.telemetry,
+          this.yamlSettings.kubernetesSchemaUrl
+        ),
       };
       this.yamlSettings.schemaConfigurationSettings.push(schemaObj);
     }
@@ -333,7 +339,13 @@ export class SettingsHandler {
     languageSettings: LanguageSettings,
     priorityLevel: number
   ): LanguageSettings {
-    uri = checkSchemaURI(this.yamlSettings.workspaceFolders, this.yamlSettings.workspaceRoot, uri, this.telemetry, this.yamlSettings.kubernetesSchemaUrl);
+    uri = checkSchemaURI(
+      this.yamlSettings.workspaceFolders,
+      this.yamlSettings.workspaceRoot,
+      uri,
+      this.telemetry,
+      this.yamlSettings.kubernetesSchemaUrl
+    );
 
     if (schema === null) {
       languageSettings.schemas.push({ uri, fileMatch: fileMatch, priority: priorityLevel });
