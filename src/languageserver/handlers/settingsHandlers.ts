@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 import { configure as configureHttpRequests, xhr } from 'request-light';
 import { Connection, DidChangeConfigurationNotification, DocumentFormattingRequest } from 'vscode-languageserver';
-import { convertErrorToTelemetryMsg } from '../../languageservice/utils/objects';
 import { isRelativePath, relativeToAbsolutePath } from '../../languageservice/utils/paths';
 import { checkSchemaURI, JSON_SCHEMASTORE_URL } from '../../languageservice/utils/schemaUrls';
 import { LanguageService, LanguageSettings, SchemaPriority } from '../../languageservice/yamlLanguageService';
@@ -28,7 +27,7 @@ export class SettingsHandler {
         // Register for all configuration changes.
         await this.connection.client.register(DidChangeConfigurationNotification.type);
       } catch (err) {
-        this.telemetry.sendError('yaml.settings.error', { error: convertErrorToTelemetryMsg(err) });
+        this.telemetry.sendError('yaml.settings.error', err);
       }
     }
     this.connection.onDidChangeConfiguration(() => this.pullConfiguration());
@@ -84,7 +83,7 @@ export class SettingsHandler {
 
       if (settings.yaml.schemaStore) {
         this.yamlSettings.schemaStoreEnabled = settings.yaml.schemaStore.enable;
-        if (settings.yaml.schemaStore.url.length !== 0) {
+        if (settings.yaml.schemaStore.url?.length !== 0) {
           this.yamlSettings.schemaStoreUrl = settings.yaml.schemaStore.url;
         }
       }
@@ -189,7 +188,7 @@ export class SettingsHandler {
   private async setSchemaStoreSettingsIfNotSet(): Promise<void> {
     const schemaStoreIsSet = this.yamlSettings.schemaStoreSettings.length !== 0;
     let schemaStoreUrl = '';
-    if (this.yamlSettings.schemaStoreUrl.length !== 0) {
+    if (this.yamlSettings.schemaStoreUrl?.length !== 0) {
       schemaStoreUrl = this.yamlSettings.schemaStoreUrl;
     } else {
       schemaStoreUrl = JSON_SCHEMASTORE_URL;

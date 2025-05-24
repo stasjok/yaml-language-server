@@ -3,7 +3,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-'use strict';
 
 import { SymbolInformation, DocumentSymbol } from 'vscode-languageserver-types';
 import { YAMLSchemaService } from './yamlSchemaService';
@@ -13,12 +12,14 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import { yamlDocumentsCache } from '../parser/yaml-documents';
 import { Telemetry } from '../telemetry';
 import { isMap, isSeq, Node } from 'yaml';
-import { convertErrorToTelemetryMsg } from '../utils/objects';
 
 export class YAMLDocumentSymbols {
   private jsonDocumentSymbols;
 
-  constructor(schemaService: YAMLSchemaService, private readonly telemetry?: Telemetry) {
+  constructor(
+    schemaService: YAMLSchemaService,
+    private readonly telemetry?: Telemetry
+  ) {
     this.jsonDocumentSymbols = new JSONDocumentSymbols(schemaService);
 
     // override 'getKeyLabel' to handle complex mapping
@@ -54,7 +55,7 @@ export class YAMLDocumentSymbols {
         }
       }
     } catch (err) {
-      this.telemetry?.sendError('yaml.documentSymbols.error', { error: convertErrorToTelemetryMsg(err) });
+      this.telemetry?.sendError('yaml.documentSymbols.error', err);
     }
     return results;
   }
@@ -76,7 +77,7 @@ export class YAMLDocumentSymbols {
         }
       }
     } catch (err) {
-      this.telemetry?.sendError('yaml.hierarchicalDocumentSymbols.error', { error: convertErrorToTelemetryMsg(err) });
+      this.telemetry?.sendError('yaml.hierarchicalDocumentSymbols.error', err);
     }
 
     return results;
